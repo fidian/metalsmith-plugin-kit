@@ -11,15 +11,15 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/connected-world-services/metalsmith-plugin-kit.git"
+        "url": "git+https://github.com/fidian/metalsmith-plugin-kit.git"
     },
     "keywords": [],
     "author": "",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/connected-world-services/metalsmith-plugin-kit/issues"
+        "url": "https://github.com/fidian/metalsmith-plugin-kit/issues"
     },
-    "homepage": "https://github.com/connected-world-services/metalsmith-plugin-kit#readme",
+    "homepage": "https://github.com/fidian/metalsmith-plugin-kit#readme",
     "devDependencies": {
         "codecov": "^2.2.0",
         "eslint": "^3.19.0",
