@@ -1,0 +1,121 @@
+Metalsmith Plugin Kit
+=====================
+
+Remove the boring part of making [Metalsmith] plugins and simply your life. Rely on tested code to do the menial tasks. Reuse the same base libraries in order to try to mitigate the explosion of files in the `node_modules/` folder.
+
+**This is not a plugin!** It helps you make one.
+
+[![npm version][npm-badge]][npm-link]
+[![Build Status][travis-badge]][travis-link]
+[![Dependencies][dependencies-badge]][dependencies-link]
+[![Dev Dependencies][devdependencies-badge]][devdependencies-link]
+[![codecov.io][codecov-badge]][codecov-link]
+
+
+Overview
+--------
+
+An example goes a long way.
+
+    // This is based on the plugin skeleton from Metalsmith.io
+    var debug = require("debug")("metalsmith-myplugin");
+    var multimatch = require("multimatch");
+
+    module.exports = function myplugin(opts) {
+        var matchFunction;
+
+        if (!opts || typeof opts !== "object") {
+            opts = {};
+        }
+
+        opts.pattern = opts.pattern || [];
+
+        return function (files, metalsmith, done) {
+            Object.keys(files).forEach(function(file) {
+                if (multimatch(file, opts.pattern).length) {
+                    debug("myplugin working on: %s", file);
+                    //
+                    // here would be your code
+                    //
+                }
+            });
+            done();
+        };
+    }
+
+Plugin Kit helps remove the need for a matching library and iterating over the properties of the `files` object. Here's the same plugin rewritten for Plugin Kit.
+
+    // Now, the same plugin written using Plugin Kit
+    var debug = require("debug")("metalsmith-myplugin");
+    var pluginKit = require("metalsmith-plugin-kit");
+
+    module.exports = function myplugin(opts) {
+        opts = pluginKit.defaultOptions({
+            pattern: []
+        }, opts);
+
+        return pluginKit.middleware({
+            each: function (filename, fileObject) {
+                //
+                // here would be your code
+                //
+            };
+            match: opts.pattern
+        });
+    }
+
+There are two huge benefits to this. The first shows up when you want to perform asynchronous tasks because all of the callbacks can return a value (synchronous), return a `Promise` (asynchronous) or accept a node-style callback (asynchronous).
+
+The second big bonus you get is you don't need to test the file matching code nor do you need to construct tests that confirm the order of events. That's handled and tested by `metalsmith-plugin-kit`.
+
+There's additional helper methods that simplify common tasks that plugins need to perform, such as creating files, cloning data structures, matching file globs, and renaming functions. The example above shows how to default options and it illustrates the middleware function.
+
+If that wasn't enough, you should make sure you're not underestimating the positive aspects of being able to shift responsibility away from your code and into someone else's. You no longer need to make sure you are matching files correctly. It's not a problem for you to start to use asynchronous processing. When Metalsmith requires a property for a file to be properly created, this library handles it instead of you. I take on that responsibility and will work to maintain and test the features this module exposes.
+
+
+Installation
+------------
+
+Use `npm` to install this package easily.
+
+    $ npm install --save metalsmith-plugin-kit
+
+Alternately you may edit your `package.json` and add this to your `dependencies` object:
+
+    {
+        ...
+        "dependencies": {
+            ...
+            "metalsmith-plugin-kit": "*"
+            ...
+        }
+        ...
+    }
+
+If you relied on a library like `micromatch`, `minimatch`, or `multimatch`, you can safely remove those lines.
+
+
+API
+---
+
+{{>main}}
+
+
+License
+-------
+
+This software is licensed under a [MIT license][LICENSE] that contains additional non-advertising and patent-related clauses.  [Read full license terms][LICENSE]
+
+
+[codecov-badge]: https://img.shields.io/codecov/c/github/connected-world-services/metalsmith-plugin-kit/master.svg
+[codecov-link]: https://codecov.io/github/connected-world-services/metalsmith-plugin-kit?branch=master
+[dependencies-badge]: https://img.shields.io/david/connected-world-services/metalsmith-plugin-kit.svg
+[dependencies-link]: https://david-dm.org/connected-world-services/metalsmith-plugin-kit
+[devdependencies-badge]: https://img.shields.io/david/dev/connected-world-services/metalsmith-plugin-kit.svg
+[devdependencies-link]: https://david-dm.org/connected-world-services/metalsmith-plugin-kit#info=devDependencies
+[LICENSE]: LICENSE.md
+[Metalsmith]: http://www.metalsmith.io/
+[npm-badge]: https://img.shields.io/npm/v/metalsmith-plugin-kit.svg
+[npm-link]: https://npmjs.org/package/metalsmith-plugin-kit
+[travis-badge]: https://img.shields.io/travis/connected-world-services/metalsmith-plugin-kit/master.svg
+[travis-link]: http://travis-ci.org/connected-world-services/metalsmith-plugin-kit

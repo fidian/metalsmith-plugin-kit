@@ -1,0 +1,38 @@
+{
+    "name": "metalsmith-plugin-kit",
+    "version": "1.0.0",
+    "description": "Simplify the repetitive portions of writing Metalsmith plugins.",
+    "main": "lib/index.js",
+    "scripts": {
+        "clean": "rm -rf package-lock.json node_modules/",
+        "readme": "jsdoc2md --template README.hbt --no-cache -f 'lib/**/*' --global-index-format grouped --param-list-format list > README.md",
+        "test": "script/test",
+        "watch": "nodemon --exec jasmine"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/connected-world-services/metalsmith-plugin-kit.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/connected-world-services/metalsmith-plugin-kit/issues"
+    },
+    "homepage": "https://github.com/connected-world-services/metalsmith-plugin-kit#readme",
+    "devDependencies": {
+        "codecov": "^2.2.0",
+        "jsdoc-to-markdown": "^3.0.0",
+        "eslint": "^3.19.0",
+        "istanbul": "^0.4.5",
+        "jasmine": "^2.6.0",
+        "jasmine-test-helpers": "^1.2.3",
+        "nodemon": "^1.11.0"
+    },
+    "dependencies": {
+        "micromatch": "^3.0.3"
+    },
+    "engines": {
+        "node": ">= 4.0.0"
+    }
+}
