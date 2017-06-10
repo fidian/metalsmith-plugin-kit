@@ -4,7 +4,7 @@
     "description": "Simplify the repetitive portions of writing Metalsmith plugins.",
     "main": "lib/index.js",
     "scripts": {
-        "clean": "rm -rf package-lock.json node_modules/",
+        "clean": "rm -rf coverage node_modules/ package-lock.json",
         "readme": "jsdoc2md --template README.hbt --no-cache -f 'lib/**/*' --global-index-format grouped --param-list-format list > README.md",
         "test": "script/test",
         "watch": "nodemon --exec jasmine"
