@@ -22,11 +22,11 @@
     "homepage": "https://github.com/connected-world-services/metalsmith-plugin-kit#readme",
     "devDependencies": {
         "codecov": "^2.2.0",
-        "jsdoc-to-markdown": "^3.0.0",
         "eslint": "^3.19.0",
         "istanbul": "^0.4.5",
         "jasmine": "^2.6.0",
         "jasmine-test-helpers": "^1.2.3",
+        "jsdoc-to-markdown": "^3.0.0",
         "nodemon": "^1.11.0"
     },
     "dependencies": {
