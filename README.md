@@ -531,15 +531,15 @@ License
 This software is licensed under a [MIT license][LICENSE] that contains additional non-advertising and patent-related clauses.  [Read full license terms][LICENSE]
 
 
-[codecov-badge]: https://img.shields.io/codecov/c/github/connected-world-services/metalsmith-plugin-kit/master.svg
-[codecov-link]: https://codecov.io/github/connected-world-services/metalsmith-plugin-kit?branch=master
-[dependencies-badge]: https://img.shields.io/david/connected-world-services/metalsmith-plugin-kit.svg
-[dependencies-link]: https://david-dm.org/connected-world-services/metalsmith-plugin-kit
-[devdependencies-badge]: https://img.shields.io/david/dev/connected-world-services/metalsmith-plugin-kit.svg
-[devdependencies-link]: https://david-dm.org/connected-world-services/metalsmith-plugin-kit#info=devDependencies
+[codecov-badge]: https://img.shields.io/codecov/c/github/fidian/metalsmith-plugin-kit/master.svg
+[codecov-link]: https://codecov.io/github/fidian/metalsmith-plugin-kit?branch=master
+[dependencies-badge]: https://img.shields.io/david/fidian/metalsmith-plugin-kit.svg
+[dependencies-link]: https://david-dm.org/fidian/metalsmith-plugin-kit
+[devdependencies-badge]: https://img.shields.io/david/dev/fidian/metalsmith-plugin-kit.svg
+[devdependencies-link]: https://david-dm.org/fidian/metalsmith-plugin-kit#info=devDependencies
 [LICENSE]: LICENSE.md
 [Metalsmith]: http://www.metalsmith.io/
 [npm-badge]: https://img.shields.io/npm/v/metalsmith-plugin-kit.svg
 [npm-link]: https://npmjs.org/package/metalsmith-plugin-kit
-[travis-badge]: https://img.shields.io/travis/connected-world-services/metalsmith-plugin-kit/master.svg
-[travis-link]: http://travis-ci.org/connected-world-services/metalsmith-plugin-kit
+[travis-badge]: https://img.shields.io/travis/fidian/metalsmith-plugin-kit/master.svg
+[travis-link]: http://travis-ci.org/fidian/metalsmith-plugin-kit
