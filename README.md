@@ -118,6 +118,8 @@ var pluginKit = require("metalsmith-plugin-kit");
         * [.middleware([options])](#module_metalsmith-plugin-kit.middleware) ⇒ <code>function</code>
         * [.renameFunction(fn, name)](#module_metalsmith-plugin-kit.renameFunction)
     * _inner_
+        * [~metalsmithFile](#module_metalsmith-plugin-kit..metalsmithFile) : <code>Object</code>
+        * [~metalsmithFileCollection](#module_metalsmith-plugin-kit..metalsmithFileCollection) : <code>Object.&lt;string, metalsmith-plugin-kit~metalsmithFile&gt;</code>
         * [~matchItem](#module_metalsmith-plugin-kit..matchItem) : <code>string</code> \| <code>RegExp</code> \| <code>function</code>
         * [~matchList](#module_metalsmith-plugin-kit..matchList) : [<code>matchItem</code>](#module_metalsmith-plugin-kit..matchItem) \| [<code>Array.&lt;matchItem&gt;</code>](#module_metalsmith-plugin-kit..matchItem)
         * [~matchOptions](#module_metalsmith-plugin-kit..matchOptions) : <code>Object</code>
@@ -142,7 +144,7 @@ The contents can be converted:
 **Kind**: static method of [<code>metalsmith-plugin-kit</code>](#module_metalsmith-plugin-kit)  
 **Params**
 
-- files [<code>metalsmithFileCollection</code>](#metalsmith-plugin-kit..metalsmithFileCollection)
+- files <code>metalsmith-plugin-kit~metalsmithFileCollection</code>
 - filename <code>string</code>
 - contents <code>Buffer</code> | <code>string</code> | <code>\*</code>
 - [options] <code>Object</code>
@@ -395,6 +397,27 @@ console.log(x.name); // Could be undefined, could be "x".
 pluginKit.renameFunction(x, "MysteriousFunction");
 console.log(x.name); // "MysteriousFunction"
 ```
+<a name="module_metalsmith-plugin-kit..metalsmithFile"></a>
+
+### metalsmith-plugin-kit~metalsmithFile : <code>Object</code>
+This is a typical file object from Metalsmith.
+
+Other properties may be defined, but the ones listed here must be defined.
+
+**Kind**: inner typedef of [<code>metalsmith-plugin-kit</code>](#module_metalsmith-plugin-kit)  
+**Properties**
+
+| Name | Type |
+| --- | --- |
+| contents | <code>Buffer</code> | 
+| mode | <code>string</code> | 
+
+<a name="module_metalsmith-plugin-kit..metalsmithFileCollection"></a>
+
+### metalsmith-plugin-kit~metalsmithFileCollection : <code>Object.&lt;string, metalsmith-plugin-kit~metalsmithFile&gt;</code>
+Metalsmith's collection of files.
+
+**Kind**: inner typedef of [<code>metalsmith-plugin-kit</code>](#module_metalsmith-plugin-kit)  
 <a name="module_metalsmith-plugin-kit..matchItem"></a>
 
 ### metalsmith-plugin-kit~matchItem : <code>string</code> \| <code>RegExp</code> \| <code>function</code>
@@ -518,7 +541,7 @@ Uses Node-style callbacks if your function expects more than 4 parameters.
 **Params**
 
 - filename <code>string</code>
-- file <code>module:metalsmith-plugin-kit~metalsmithFile</code>
+- file [<code>metalsmithFile</code>](#module_metalsmith-plugin-kit..metalsmithFile)
 - files <code>module:metalsmith-plugin-kit~metalsmithFiles</code>
 - metalsmith <code>external:metalsmith</code>
 - [done] <code>function</code>
