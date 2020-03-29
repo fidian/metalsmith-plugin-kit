@@ -25,7 +25,9 @@ describe("metalsmith-plugin-kit", () => {
             pluginKit.addFile(files, "test2", "MTIzNDU2Nzg5", {
                 encoding: "base64"
             });
-            expect(files.test1.contents.toString("utf8")).toEqual("MTIzNDU2Nzg5");
+            expect(files.test1.contents.toString("utf8")).toEqual(
+                "MTIzNDU2Nzg5"
+            );
             expect(files.test2.contents.toString("utf8")).toEqual("123456789");
         });
         it("overwrites files", () => {
@@ -50,7 +52,11 @@ describe("metalsmith-plugin-kit", () => {
 
             files = {};
             pluginKit.addFile(files, "text", "text content");
-            pluginKit.addFile(files, "buff", Buffer.from("buffer content", "utf8"));
+            pluginKit.addFile(
+                files,
+                "buff",
+                Buffer.from("buffer content", "utf8")
+            );
             pluginKit.addFile(files, "json", {
                 json: true
             });
@@ -132,36 +138,62 @@ describe("metalsmith-plugin-kit", () => {
             });
         }
 
-        [
-            callbackTest,
-            syncTest,
-            promiseTest
-        ].forEach((testFunction) => {
+        [callbackTest, syncTest, promiseTest].forEach((testFunction) => {
             describe(testFunction.name, () => {
                 it("works with zero arguments", () => {
-                    return pluginKit.callFunction(testFunction, []).then((result) => {
-                        expect(result).toEqual([]);
-                    });
+                    return pluginKit
+                        .callFunction(testFunction, [])
+                        .then((result) => {
+                            expect(result).toEqual([]);
+                        });
                 });
                 it("works with three arguments", () => {
-                    return pluginKit.callFunction(testFunction, [
-                        "first argument",
-                        2,
-                        true
-                    ]).then((result) => {
-                        expect(result).toEqual([
-                            "first argument",
-                            2,
-                            true
-                        ]);
-                    });
+                    return pluginKit
+                        .callFunction(testFunction, ["first argument", 2, true])
+                        .then((result) => {
+                            expect(result).toEqual(["first argument", 2, true]);
+                        });
                 });
                 it("returns failures", () => {
-                    return pluginKit.callFunction(testFunction, [
-                        false
-                    ]).then(jasmine.fail, () => {});
+                    return pluginKit
+                        .callFunction(testFunction, [false])
+                        .then(jasmine.fail, () => {});
                 });
             });
+        });
+    });
+    describe(".chain()", () => {
+        it("works with zero plugins", () => {
+            const plugin = pluginKit.chain();
+            let complete;
+
+            expect(typeof plugin).toBe("function");
+            complete = false;
+            plugin({}, {}, (e) => {
+                expect(e).toBeFalsy();
+                complete = true;
+            });
+            expect(complete).toBe(true);
+        });
+        it("works with plugins", () => {
+            const files = {},
+                p1 = (f, m, n) => {
+                    f.one = true;
+                    n();
+                },
+                p2 = (f, m, n) => {
+                    f.two = true;
+                    n();
+                },
+                plugin = pluginKit.chain(p1, p2);
+            var complete;
+
+            complete = false;
+            plugin(files, {}, (e) => {
+                expect(e).toBeFalsy();
+                complete = true;
+            });
+            expect(complete).toBe(true);
         });
     });
     describe(".clone()", () => {
@@ -200,29 +232,39 @@ describe("metalsmith-plugin-kit", () => {
     });
     describe(".defaultOptions()", () => {
         it("overwrites the default value", () => {
-            expect(pluginKit.defaultOptions({
-                a: "default",
-                a2: "default"
-            }, {
-                a: "new value"
-            })).toEqual({
+            expect(
+                pluginKit.defaultOptions(
+                    {
+                        a: "default",
+                        a2: "default"
+                    },
+                    {
+                        a: "new value"
+                    }
+                )
+            ).toEqual({
                 a: "new value",
                 a2: "default"
             });
         });
         it("replaces object values", () => {
-            expect(pluginKit.defaultOptions({
-                b: {
-                    note: "This whole object is REPLACED"
-                },
-                b2: {
-                    note: "Not replaced"
-                }
-            }, {
-                b: {
-                    c: "new value"
-                }
-            })).toEqual({
+            expect(
+                pluginKit.defaultOptions(
+                    {
+                        b: {
+                            note: "This whole object is REPLACED"
+                        },
+                        b2: {
+                            note: "Not replaced"
+                        }
+                    },
+                    {
+                        b: {
+                            c: "new value"
+                        }
+                    }
+                )
+            ).toEqual({
                 b: {
                     c: "new value"
                 },
@@ -232,11 +274,16 @@ describe("metalsmith-plugin-kit", () => {
             });
         });
         it("ignores overrides that are not in the defaults", () => {
-            expect(pluginKit.defaultOptions({
-                c: "keep this value"
-            }, {
-                c2: "should not get added"
-            })).toEqual({
+            expect(
+                pluginKit.defaultOptions(
+                    {
+                        c: "keep this value"
+                    },
+                    {
+                        c2: "should not get added"
+                    }
+                )
+            ).toEqual({
                 c: "keep this value"
             });
         });
@@ -291,30 +338,25 @@ describe("metalsmith-plugin-kit", () => {
         }
 
         it("matches a glob", () => {
-            expect(testMatch("*.txt")).toEqual([
-                "a.txt"
-            ]);
+            expect(testMatch("*.txt")).toEqual(["a.txt"]);
         });
         it("matches recursively", () => {
-            expect(testMatch("**/*.txt")).toEqual([
-                "a.txt",
-                "c/d.txt"
-            ]);
+            expect(testMatch("**/*.txt")).toEqual(["a.txt", "c/d.txt"]);
         });
         it("matches on basename, regardless of path", () => {
             // This also includes directories with leading dots.
-            expect(testMatch("*.txt", {
-                basename: true
-            })).toEqual([
-                "a.txt",
-                "c/d.txt",
-                ".f/g.txt"
-            ]);
+            expect(
+                testMatch("*.txt", {
+                    basename: true
+                })
+            ).toEqual(["a.txt", "c/d.txt", ".f/g.txt"]);
         });
         it("matches dotfiles", () => {
-            expect(testMatch("**/*.txt", {
-                dot: true
-            })).toEqual([
+            expect(
+                testMatch("**/*.txt", {
+                    dot: true
+                })
+            ).toEqual([
                 "a.txt",
                 ".b.txt",
                 "c/d.txt",
@@ -325,11 +367,11 @@ describe("metalsmith-plugin-kit", () => {
         });
         it("matches case-insensitively", () => {
             expect(testMatch("*.TXT")).toEqual([]);
-            expect(testMatch("*.TXT", {
-                nocase: true
-            })).toEqual([
-                "a.txt"
-            ]);
+            expect(
+                testMatch("*.TXT", {
+                    nocase: true
+                })
+            ).toEqual(["a.txt"]);
         });
         it("negates a whole pattern", () => {
             // This also matches dot files and any other files that do not
@@ -351,9 +393,7 @@ describe("metalsmith-plugin-kit", () => {
         it("negates a particular ending", () => {
             // Does not include c/.e.txt because * doesn't match dot files
             // without the flag.
-            expect(testMatch("c/*.!(js)")).toEqual([
-                "c/d.txt"
-            ]);
+            expect(testMatch("c/*.!(js)")).toEqual(["c/d.txt"]);
         });
         it("matches extglobs", () => {
             expect(testMatch("*.!(htm|html)")).toEqual([
@@ -364,31 +404,19 @@ describe("metalsmith-plugin-kit", () => {
             ]);
         });
         it("matches character classes", () => {
-            expect(testMatch("*.h[[:alpha:]]m")).toEqual([
-                "k.htm"
-            ]);
+            expect(testMatch("*.h[[:alpha:]]m")).toEqual(["k.htm"]);
         });
         it("matches brace expansion", () => {
-            expect(testMatch("*/{a..z}.txt")).toEqual([
-                "c/d.txt"
-            ]);
+            expect(testMatch("*/{a..z}.txt")).toEqual(["c/d.txt"]);
         });
         it("matches character classes", () => {
-            expect(testMatch("*.[a-z]??")).toEqual([
-                "a.txt", "k.htm"
-            ]);
+            expect(testMatch("*.[a-z]??")).toEqual(["a.txt", "k.htm"]);
         });
         it("matches logical 'or'", () => {
-            expect(testMatch("*.(md|html)")).toEqual([
-                "l.html",
-                "m.md"
-            ]);
+            expect(testMatch("*.(md|html)")).toEqual(["l.html", "m.md"]);
         });
         it("matches multiple patterns", () => {
-            expect(testMatch([
-                "*.md",
-                "*.htm*"
-            ])).toEqual([
+            expect(testMatch(["*.md", "*.htm*"])).toEqual([
                 "k.htm",
                 "l.html",
                 "m.md"
@@ -403,19 +431,15 @@ describe("metalsmith-plugin-kit", () => {
             ]);
         });
         it("matches functions", () => {
-            expect(testMatch((filename) => {
-                var index;
+            expect(
+                testMatch((filename) => {
+                    var index;
 
-                index = [
-                    "a.txt",
-                    "i.js"
-                ].indexOf(filename);
+                    index = ["a.txt", "i.js"].indexOf(filename);
 
-                return index !== -1;
-            })).toEqual([
-                "a.txt",
-                "i.js"
-            ]);
+                    return index !== -1;
+                })
+            ).toEqual(["a.txt", "i.js"]);
         });
     });
     describe(".middleware()", () => {
@@ -507,21 +531,11 @@ describe("metalsmith-plugin-kit", () => {
 
                 return runMiddleware({
                     each: (fn, f, fs, ms) => {
-                        calls.push([
-                            fn,
-                            f,
-                            fs,
-                            ms
-                        ]);
+                        calls.push([fn, f, fs, ms]);
                     }
                 }).then(() => {
                     expect(calls).toEqual([
-                        [
-                            "test.txt",
-                            files["test.txt"],
-                            files,
-                            metalsmith
-                        ]
+                        ["test.txt", files["test.txt"], files, metalsmith]
                     ]);
                 });
             });
@@ -532,22 +546,24 @@ describe("metalsmith-plugin-kit", () => {
             });
             it("defaults to **/*", () => {
                 return runMiddleware().then(() => {
-                    expect(pluginKit.filenameMatcher).toHaveBeenCalledWith("**/*", jasmine.any(Object));
+                    expect(pluginKit.filenameMatcher).toHaveBeenCalledWith(
+                        "**/*",
+                        jasmine.any(Object)
+                    );
                 });
             });
             it("passes any other value", () => {
                 return runMiddleware({
-                    match: [
-                        "anything",
-                        /goes/,
-                        function here() {}
-                    ]
+                    match: ["anything", /goes/, function here() {}]
                 }).then(() => {
-                    expect(pluginKit.filenameMatcher).toHaveBeenCalledWith([
-                        "anything",
-                        jasmine.any(RegExp),
-                        jasmine.any(Function)
-                    ], jasmine.any(Object));
+                    expect(pluginKit.filenameMatcher).toHaveBeenCalledWith(
+                        [
+                            "anything",
+                            jasmine.any(RegExp),
+                            jasmine.any(Function)
+                        ],
+                        jasmine.any(Object)
+                    );
                 });
             });
         });
@@ -557,7 +573,10 @@ describe("metalsmith-plugin-kit", () => {
             });
             it("defaults to an empty object", () => {
                 return runMiddleware().then(() => {
-                    expect(pluginKit.filenameMatcher).toHaveBeenCalledWith(jasmine.any(String), {});
+                    expect(pluginKit.filenameMatcher).toHaveBeenCalledWith(
+                        jasmine.any(String),
+                        {}
+                    );
                 });
             });
             it("can be set to anything else", () => {
@@ -570,7 +589,10 @@ describe("metalsmith-plugin-kit", () => {
                 return runMiddleware({
                     matchOptions: options
                 }).then(() => {
-                    expect(pluginKit.filenameMatcher).toHaveBeenCalledWith(jasmine.any(String), options);
+                    expect(pluginKit.filenameMatcher).toHaveBeenCalledWith(
+                        jasmine.any(String),
+                        options
+                    );
                 });
             });
         });

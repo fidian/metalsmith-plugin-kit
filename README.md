@@ -112,6 +112,7 @@ var pluginKit = require("metalsmith-plugin-kit");
     * _static_
         * [.addFile(files, filename, contents, [options])](#module_metalsmith-plugin-kit.addFile)
         * [.callFunction(fn, args)](#module_metalsmith-plugin-kit.callFunction) ⇒ <code>Promise.&lt;\*&gt;</code>
+        * [.chain()](#module_metalsmith-plugin-kit.chain) ⇒ <code>function</code>
         * [.clone(original)](#module_metalsmith-plugin-kit.clone) ⇒ <code>\*</code>
         * [.defaultOptions(defaults, override)](#module_metalsmith-plugin-kit.defaultOptions) ⇒ <code>Object</code>
         * [.filenameMatcher(match, [options])](#module_metalsmith-plugin-kit.filenameMatcher) ⇒ [<code>matchFunction</code>](#module_metalsmith-plugin-kit..matchFunction)
@@ -120,7 +121,7 @@ var pluginKit = require("metalsmith-plugin-kit");
     * _inner_
         * [~metalsmithFile](#module_metalsmith-plugin-kit..metalsmithFile) : <code>Object</code>
         * [~metalsmithFileCollection](#module_metalsmith-plugin-kit..metalsmithFileCollection) : <code>Object.&lt;string, metalsmith-plugin-kit~metalsmithFile&gt;</code>
-        * [~matchItem](#module_metalsmith-plugin-kit..matchItem) : <code>string</code> \| <code>RegExp</code> \| <code>function</code>
+        * [~matchItem](#module_metalsmith-plugin-kit..matchItem) : <code>string</code> \| <code>RegExp</code> \| <code>function</code> \| <code>Object</code>
         * [~matchList](#module_metalsmith-plugin-kit..matchList) : [<code>matchItem</code>](#module_metalsmith-plugin-kit..matchItem) \| [<code>Array.&lt;matchItem&gt;</code>](#module_metalsmith-plugin-kit..matchItem)
         * [~matchOptions](#module_metalsmith-plugin-kit..matchOptions) : <code>Object</code>
         * [~matchFunction](#module_metalsmith-plugin-kit..matchFunction) ⇒ <code>boolean</code>
@@ -212,6 +213,26 @@ function testCallback(message, done) {
 
 promise = pluginKit.callFunction(testCallback, [ "sample message" ]);
 // promise will be resolved after message is printed
+```
+<a name="module_metalsmith-plugin-kit.chain"></a>
+
+### metalsmith-plugin-kit.chain() ⇒ <code>function</code>
+Chains multiple plugins into one
+
+**Kind**: static method of [<code>metalsmith-plugin-kit</code>](#module_metalsmith-plugin-kit)  
+**Returns**: <code>function</code> - Combined function  
+**Params**
+
+            - . <code>function</code> - Plugins to combine
+
+**Example**  
+```js
+const plugin1 = require('metalsmith-markdown')();
+const plugin2 = require('metalsmith-data-loader')();
+const pluginKit = require('metalsmith-plugin-kit');
+
+const combined = pluginKit.chain(plugin1, plugin2);
+metalsmith.use(combined);
 ```
 <a name="module_metalsmith-plugin-kit.clone"></a>
 
@@ -407,10 +428,8 @@ Other properties may be defined, but the ones listed here must be defined.
 **Kind**: inner typedef of [<code>metalsmith-plugin-kit</code>](#module_metalsmith-plugin-kit)  
 **Properties**
 
-| Name | Type |
-| --- | --- |
-| contents | <code>Buffer</code> | 
-| mode | <code>string</code> | 
+- contents <code>Buffer</code>  
+- mode <code>string</code>  
 
 <a name="module_metalsmith-plugin-kit..metalsmithFileCollection"></a>
 
@@ -420,7 +439,7 @@ Metalsmith's collection of files.
 **Kind**: inner typedef of [<code>metalsmith-plugin-kit</code>](#module_metalsmith-plugin-kit)  
 <a name="module_metalsmith-plugin-kit..matchItem"></a>
 
-### metalsmith-plugin-kit~matchItem : <code>string</code> \| <code>RegExp</code> \| <code>function</code>
+### metalsmith-plugin-kit~matchItem : <code>string</code> \| <code>RegExp</code> \| <code>function</code> \| <code>Object</code>
 As a string, this is a single match pattern. It supports the following
 features, which are taken from the Bash 4.3 specification. With each feature
 listed, a couple sample examples are shown.
@@ -438,6 +457,9 @@ When a RegExp, the file is tested against the regular expression.
 When this is a function, the filename is passed as the first argument and
 the file contents are the second argument. If the returned value is truthy,
 the file matches. This function may not be asynchronous.
+
+When an object, this uses the object's `.test()` method. Make sure one
+exists.
 
 **Kind**: inner typedef of [<code>metalsmith-plugin-kit</code>](#module_metalsmith-plugin-kit)  
 **See**: [https://github.com/micromatch/micromatch#extended-globbing](https://github.com/micromatch/micromatch#extended-globbing) for extended globbing features.  
@@ -461,11 +483,9 @@ Other options are also available from the library itself.
 **See**: [https://github.com/micromatch/micromatch#options](https://github.com/micromatch/micromatch#options) for additional options supported by current backend library.  
 **Properties**
 
-| Name | Type | Default | Description |
-| --- | --- | --- | --- |
-| basename | <code>boolean</code> | <code>false</code> | Allow glob patterns without slashes to match a file path based on its basename. |
-| dot | <code>boolean</code> | <code>false</code> | Enable searching of files and folders that start with a dot. |
-| nocase | <code>boolean</code> | <code>false</code> | Enable case-insensitive searches. |
+- basename <code>boolean</code> - Allow glob patterns without slashes to match a file path based on its basename.  
+- dot <code>boolean</code> - Enable searching of files and folders that start with a dot.  
+- nocase <code>boolean</code> - Enable case-insensitive searches.  
 
 <a name="module_metalsmith-plugin-kit..matchFunction"></a>
 
@@ -493,14 +513,12 @@ Middleware defintion object.
 
 **Properties**
 
-| Name | Type | Default | Description |
-| --- | --- | --- | --- |
-| after | [<code>endpointCallback</code>](#module_metalsmith-plugin-kit..endpointCallback) |  | Called after all files are processed. |
-| before | [<code>endpointCallback</code>](#module_metalsmith-plugin-kit..endpointCallback) |  | Called before any files are processed. |
-| each | [<code>eachCallback</code>](#module_metalsmith-plugin-kit..eachCallback) |  | Called  once for each file that matches. |
-| match | [<code>matchList</code>](#module_metalsmith-plugin-kit..matchList) |  | Defaults to all files |
-| matchOptions | [<code>matchOptions</code>](#module_metalsmith-plugin-kit..matchOptions) | <code>{}</code> |  |
-| name | <code>string</code> |  | When supplied, renames the middleware function that's returned to the given name. Useful for `metalsmith-debug-ui`, for instance. |
+- after [<code>endpointCallback</code>](#module_metalsmith-plugin-kit..endpointCallback) - Called after all files are processed.  
+- before [<code>endpointCallback</code>](#module_metalsmith-plugin-kit..endpointCallback) - Called before any files are processed.  
+- each [<code>eachCallback</code>](#module_metalsmith-plugin-kit..eachCallback) - Called  once for each file that matches.  
+- match [<code>matchList</code>](#module_metalsmith-plugin-kit..matchList) - Defaults to all files  
+- matchOptions [<code>matchOptions</code>](#module_metalsmith-plugin-kit..matchOptions)  
+- name <code>string</code> - When supplied, renames the middleware function that's returned to the given name. Useful for `metalsmith-debug-ui`, for instance.  
 
 <a name="module_metalsmith-plugin-kit..endpointCallback"></a>
 

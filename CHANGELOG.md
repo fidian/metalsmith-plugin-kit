@@ -2,6 +2,13 @@ CHANGELOG
 =========
 
 
+1.1.0 - 2020-03-29
+------------------
+
+* Added `.chain()` function.
+* Updated dependencies.
+
+
 1.0.1 - 2017-06-10
 ------------------
 
