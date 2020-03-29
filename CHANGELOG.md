@@ -2,6 +2,12 @@ CHANGELOG
 =========
 
 
+1.1.1 - 2020-03-29
+------------------
+
+* Made arguments optional for `.callFunction()`, allowing you to pass only a function.
+
+
 1.1.0 - 2020-03-29
 ------------------
 
