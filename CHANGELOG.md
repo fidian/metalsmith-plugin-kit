@@ -2,6 +2,18 @@ CHANGELOG
 =========
 
 
+1.1.4 - 2020-03-29
+------------------
+
+* Syntax change with recently modified code. Code worked and passed tests but did not pass linting.
+
+
+1.1.3 - 2020-03-29
+------------------
+
+* Functionality fix with the matcher. The package updates with minimatch caused failures.
+
+
 1.1.2 - 2020-03-29
 ------------------
 
