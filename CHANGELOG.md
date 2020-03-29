@@ -2,6 +2,12 @@ CHANGELOG
 =========
 
 
+1.1.2 - 2020-03-29
+------------------
+
+* Increasing the minimum version for Node.js.
+
+
 1.1.1 - 2020-03-29
 ------------------
 
