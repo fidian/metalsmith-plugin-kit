@@ -368,6 +368,9 @@ return pluginKit.middleware({
     matchOptions: {
         basename: true
     },
+
+    // Providing a name will rename this middleware so it can be displayed
+    // by metalsmith-debug-ui and other tools.
     name: "metalsmith-lowercase-fidian"
 });
 ```
