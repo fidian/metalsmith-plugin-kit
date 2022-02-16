@@ -111,7 +111,7 @@ var pluginKit = require("metalsmith-plugin-kit");
 * [metalsmith-plugin-kit](#module_metalsmith-plugin-kit)
     * _static_
         * [.addFile(files, filename, contents, [options])](#module_metalsmith-plugin-kit.addFile)
-        * [.callFunction(fn, args)](#module_metalsmith-plugin-kit.callFunction) ⇒ <code>Promise.&lt;\*&gt;</code>
+        * [.callFunction(fn, [args])](#module_metalsmith-plugin-kit.callFunction) ⇒ <code>Promise.&lt;\*&gt;</code>
         * [.chain()](#module_metalsmith-plugin-kit.chain) ⇒ <code>function</code>
         * [.clone(original)](#module_metalsmith-plugin-kit.clone) ⇒ <code>\*</code>
         * [.defaultOptions(defaults, override)](#module_metalsmith-plugin-kit.defaultOptions) ⇒ <code>Object</code>
@@ -163,7 +163,7 @@ return pluginKit.middleware({
 ```
 <a name="module_metalsmith-plugin-kit.callFunction"></a>
 
-### metalsmith-plugin-kit.callFunction(fn, args) ⇒ <code>Promise.&lt;\*&gt;</code>
+### metalsmith-plugin-kit.callFunction(fn, [args]) ⇒ <code>Promise.&lt;\*&gt;</code>
 Calls a function and passes it a number of arguments. The function can
 be synchronous and return a value, asynchronous and return a Promise, or
 asynchronous and support a Node-style callback.
@@ -177,7 +177,7 @@ Promise will be rejected.
 **Params**
 
 - fn <code>function</code> - Function to call
-- args <code>Array.&lt;\*&gt;</code> - Arguments to pass to the function.
+- [args] <code>Array.&lt;\*&gt;</code> - Arguments to pass to the function.
 
 **Example**  
 ```js
@@ -354,8 +354,6 @@ return pluginKit.middleware({
 ```
 **Example**  
 ```js
-// Renames the returned function so it can be displayed by
-// metalsmith-debug-ui and other tools.
 // This silly plugin changes all instances of "fidian" to lower case
 // in all text-like files.
 return pluginKit.middleware({
