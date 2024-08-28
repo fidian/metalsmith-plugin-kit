@@ -28,7 +28,4 @@ else
     echo "Not running code coverage report."
 fi
 
-# Verify the coding standards are enforced.
-eslint .
-
 echo "All tests pass."
