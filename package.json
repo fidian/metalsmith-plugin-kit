@@ -1,6 +1,6 @@
 {
     "name": "metalsmith-plugin-kit",
-    "version": "1.6.0",
+    "version": "1.7.0",
     "description": "Simplify the repetitive portions of writing Metalsmith plugins.",
     "main": "lib/index.js",
     "scripts": {
@@ -24,9 +24,9 @@
     "devDependencies": {
         "codecov": "^3.8.2",
         "istanbul": "^0.4.5",
-        "jasmine": "^5.3.0",
+        "jasmine": "^5.4.0",
         "jasmine-test-helpers": "^1.2.3",
-        "jsdoc-to-markdown": "^9.0.2",
+        "jsdoc-to-markdown": "^9.0.5",
         "nodemon": "^3.1.7"
     },
     "dependencies": {
