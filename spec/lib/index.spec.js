@@ -403,13 +403,13 @@ describe("metalsmith-plugin-kit", () => {
                 "m.md"
             ]);
         });
-        it("matches character classes", () => {
+        it("matches character classes for alpha", () => {
             expect(testMatch("*.h[[:alpha:]]m")).toEqual(["k.htm"]);
         });
         it("matches brace expansion", () => {
             expect(testMatch("*/{a..z}.txt")).toEqual(["c/d.txt"]);
         });
-        it("matches character classes", () => {
+        it("matches character classes for a range", () => {
             expect(testMatch("*.[a-z]??")).toEqual(["a.txt", "k.htm"]);
         });
         it("matches logical 'or'", () => {
